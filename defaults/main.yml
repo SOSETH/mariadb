@@ -1,0 +1,5 @@
+---
+# Don't accept remote connections
+mariadb_local_only: True
+# TODO: replace this with something sensible and move it to secrets..
+mariadb_root_password: RwNmJU1haRmTW9soQbUarh31gBxMNELa

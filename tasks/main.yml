@@ -1,0 +1,40 @@
+---
+  - name: Install mariadb
+    apt: name={{ item }} state=present update_cache=yes cache_valid_time=1800
+    with_items:
+      - mariadb-server
+      - mariadb-client
+      - mariadb-common
+      - python-mysqldb
+
+  - name: Ensure that the service is started
+    service: name=mysql state=started enabled=yes
+
+  # Ansible >= 2.1:
+  #- name: Remove all anonymous accounts
+  #  mysql_user: name='' host_all=yes state=absent
+  #
+  #- name: Set MariaDB root password
+  #  mysql_user: name=root password="{{ mariadb_root_password }}" host_all=yes
+  - name: Remove all anonymous accounts
+    mysql_user: name='' host="{{ item }}" state=absent
+    with_items:
+      - "::1"
+      - "localhost"
+      - "127.0.0.1"
+      - "{{ ansible_hostname }}"
+
+  - name: Set MariaDB root password (part 1)
+    mysql_user: name=root password="{{ mariadb_root_password }}" host="{{ item }}"
+    with_items:
+      - "::1"
+      - "localhost"
+
+  - name: Update MariaDB client configuration
+    template: src=my.cnf.user.j2 dest=/root/.my.cnf
+
+  - name: Set MariaDB root password (part 2)
+    mysql_user: name=root password="{{ mariadb_root_password }}" host="{{ item }}"
+    with_items:
+      - "127.0.0.1"
+      - "{{ ansible_hostname }}"
