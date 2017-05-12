@@ -10,6 +10,14 @@
   - name: Ensure that the service is started
     service: name=mysql state=started enabled=yes
 
+  - name: Create MariaDB ansible config dropin
+    template: src=ansible.cnf.j2 dest=/etc/mysql/conf.d/ansible.cnf owner=root group=root mode=0644
+    register: confchanged
+
+  - name: Restart MariaDB after config change
+    service: name=mysql state=restarted
+    when: confchanged.changed
+
   # Ansible >= 2.1:
   #- name: Remove all anonymous accounts
   #  mysql_user: name='' host_all=yes state=absent
