@@ -46,3 +46,15 @@
     with_items:
       - "127.0.0.1"
       - "{{ ansible_hostname }}"
+
+  - name: Create databases
+    with_items: "{{ mariadb_databases }}"
+    mysql_db:
+      name: "{{ item.name }}"
+
+  - name: Create users
+    with_items: "{{ mariadb_databases }}"
+    mysql_user:
+      name: "{{ item.user }}"
+      password: "{{ item.password }}"
+      priv: "{{ item.name }}.*:ALL"
