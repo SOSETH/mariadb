@@ -1,13 +1,16 @@
 ---
   - name: Install mariadb
     become: True
-    apt: name={{ item }} state=present update_cache=yes cache_valid_time=1800
+    apt:
+      name:
+        - mariadb-server
+        - mariadb-client
+        - mariadb-common
+        - python-mysqldb
+      state: present
+      update_cache: yes
+      cache_valid_time: 1800
     with_items:
-      - mariadb-server
-      - mariadb-client
-      - mariadb-common
-      - python-mysqldb
-
   # For co-existance with mariadb-ha, use the systemd generator
   - name: Load service status
     become: True
