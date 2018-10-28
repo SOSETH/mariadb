@@ -10,7 +10,6 @@
       state: present
       update_cache: yes
       cache_valid_time: 1800
-    with_items:
   # For co-existance with mariadb-ha, use the systemd generator
   - name: Load service status
     become: True
