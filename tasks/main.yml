@@ -30,6 +30,7 @@
     with_items:
       - mysql.service
       - mariadb.service
+    failed_when: False
 
   - name: Ensure that the service is started
     become: True
