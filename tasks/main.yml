@@ -6,11 +6,12 @@
         - mariadb-server
         - mariadb-client
         - mariadb-common
-        - python-mysqldb
+        - python3-mysqldb
       state: present
       update_cache: yes
       cache_valid_time: 1800
-  # For co-existance with mariadb-ha, use the systemd generator
+
+  # For co-existence with mariadb-ha, use the systemd generator
   - name: Load service status
     become: True
     service_facts:
