@@ -7,6 +7,7 @@
         - mariadb-client
         - mariadb-common
         - python3-mysqldb
+        - python3-pymysql
       state: present
       update_cache: yes
       cache_valid_time: 1800
@@ -52,19 +53,12 @@
 
   - meta: flush_handlers
 
-  - name: Remove all anonymous accounts
-    become: True
-    mysql_user:
-      name: ''
-      host_all: yes
-      state: absent
-
-  - name: Set MariaDB root password
+  - name: Set MariaDB root password (local)
     become: True
     mysql_user:
       name: root
       password: "{{ mariadb_root_password }}"
-      host_all: yes
+      login_unix_socket: /var/run/mysqld/mysqld.sock
 
   - name: Update MariaDB client configuration
     become: True
@@ -74,6 +68,20 @@
       owner: root
       group: root
       mode: 0640
+
+  - name: Set MariaDB root password (everywhere)
+    become: True
+    mysql_user:
+      name: root
+      password: "{{ mariadb_root_password }}"
+      host_all: yes
+
+  - name: Remove all anonymous accounts
+    become: True
+    mysql_user:
+      name: ''
+      host_all: yes
+      state: absent
 
   - name: Create databases
     become: True
