@@ -1,4 +1,8 @@
 ---
+  - fail:
+      msg: "Bailing out: mariadb_root_password is not set"
+    when: mariadb_root_password == ''
+
   - name: Install mariadb
     become: True
     apt:
