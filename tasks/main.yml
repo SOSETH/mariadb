@@ -10,7 +10,6 @@
         - mariadb-server
         - mariadb-client
         - mariadb-common
-        - python3-mysqldb
         - python3-pymysql
       state: present
       update_cache: yes
