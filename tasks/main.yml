@@ -99,3 +99,4 @@
       name: "{{ item.user }}"
       password: "{{ item.password }}"
       priv: "{{ item.name }}.*:ALL"
+    no_log: True
