@@ -62,6 +62,7 @@
       name: root
       password: "{{ mariadb_root_password }}"
       login_unix_socket: /var/run/mysqld/mysqld.sock
+    no_log: True
 
   - name: Update MariaDB client configuration
     become: True
@@ -71,6 +72,7 @@
       owner: root
       group: root
       mode: 0640
+    no_log: True
 
   - name: Set MariaDB root password (everywhere)
     become: True
@@ -78,6 +80,7 @@
       name: root
       password: "{{ mariadb_root_password }}"
       host_all: yes
+    no_log: True
 
   - name: Remove all anonymous accounts
     become: True
